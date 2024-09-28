@@ -7,7 +7,7 @@ class TicTacToeApp:
         self.root = root
         self.root.title("Tic-Tac_Toe")
         self.root.iconbitmap('crown_icon.ico')
-        self.root.geometry("500x500")
+        self.root.geometry("500x550")
         self.ai_mode = ai_mode
 
         self.board_size = 3 
@@ -41,6 +41,13 @@ class TicTacToeApp:
     def on_button_click(self, index):
         if self.buttons[index]["text"] == "" and not self.check_winner():
             self.buttons[index]["text"] = self.current_player
+            self.board[index] = self.current_player
+
+            if self.current_player == "X":
+                self.buttons[index].config(fg="red") 
+            else:
+                self.buttons[index].config(fg="limegreen")
+
             self.board[index] = self.current_player
 
             #checking winner
@@ -111,8 +118,8 @@ def start_menu():
     # AI mode selection
     ai_var = tk.IntVar(value=0)
     tk.Label(root, text="Select Game Mode", font=('Arial', 14)).pack(pady=10)
-    tk.Radiobutton(root, text="Two Players", variable=ai_var, value=0, font=('Arial', 12)).pack()
-    tk.Radiobutton(root, text="Play against AI", variable=ai_var, value=1, font=('Arial', 12)).pack()
+    tk.Radiobutton(root, text="Two Players", variable=ai_var, value=0,font=('Arial', 12)).pack()
+    tk.Radiobutton(root, text="Play against AI", variable=ai_var, value=1,font=('Arial', 12)).pack()
     
     tk.Button(root, text="Start Game", command=start_game, font=('Arial', 14)).pack(pady=20)
 
