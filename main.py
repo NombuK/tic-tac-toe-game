@@ -1,12 +1,14 @@
 import tkinter as tk
+import random
 from tkinter import messagebox
 
 class TicTacToeApp:
-    def __init__(self, root):
+    def __init__(self, root, ai_mode=False):
         self.root = root
         self.root.title("Tic-Tac_Toe")
         self.root.iconbitmap('crown_icon.ico')
-        self.root.geometry("400x500")
+        self.root.geometry("500x500")
+        self.ai_mode = ai_mode
 
         self.board_size = 3 
         self.board = [None] * (self.board_size * self.board_size)
@@ -52,6 +54,9 @@ class TicTacToeApp:
             else:
                 self.current_player = "O" if self.current_player == "X" else "X"
 
+                if self.ai_mode and self.current_player == "O":
+                    self.ai_move()
+
     def update_score(self, player):
         if player == "X":
             self.score_X += 1
@@ -59,6 +64,13 @@ class TicTacToeApp:
             self.score_O += 1
         self.score_label.config(text= f"Player X: {self.score_X} | Player O: {self.score_O}")
     
+
+    def ai_move(self):
+        available_spots = [i for i in range(len(self.board)) if self.board[i] is None]
+        if available_spots:
+            ai_choice = random.choice(available_spots)
+            self.on_button_click(ai_choice)
+
     def check_winner(self):
         winning_combination = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], 
@@ -82,7 +94,29 @@ class TicTacToeApp:
             button.config(text="", state = "normal")
 
 
-if __name__ == "__main__":
+
+def start_menu():
+    def start_game():
+        ai_mode = ai_var.get() == 1
+        root.destroy()
+        game_root = tk.Tk()
+        TicTacToeApp(game_root, ai_mode=ai_mode)
+        game_root.mainloop()
+
     root = tk.Tk()
-    app = TicTacToeApp(root)
+    root.title("Tic-Tac-Toe Menu")
+    root.iconbitmap('crown_icon.ico')
+    root.geometry("300x300")
+    
+    # AI mode selection
+    ai_var = tk.IntVar(value=0)
+    tk.Label(root, text="Select Game Mode", font=('Arial', 14)).pack(pady=10)
+    tk.Radiobutton(root, text="Two Players", variable=ai_var, value=0, font=('Arial', 12)).pack()
+    tk.Radiobutton(root, text="Play against AI", variable=ai_var, value=1, font=('Arial', 12)).pack()
+    
+    tk.Button(root, text="Start Game", command=start_game, font=('Arial', 14)).pack(pady=20)
+
     root.mainloop()
+
+if __name__ == "__main__":
+    start_menu()
