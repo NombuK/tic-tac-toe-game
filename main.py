@@ -113,7 +113,7 @@ def start_menu():
     root = tk.Tk()
     root.title("Tic-Tac-Toe Menu")
     root.iconbitmap('crown_icon.ico')
-    root.geometry("300x300")
+    root.geometry("500x550")
     
     # AI mode selection
     ai_var = tk.IntVar(value=0)
